@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: cucumber-tag-expressions
-  version: 6.2.0
+  version: "8.0.0"
 
 package:
   name: ${{ name|lower }}
@@ -10,7 +10,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/${{ name | replace('-', '_') }}-${{ version }}.tar.gz
-  sha256: b60aa2cdbf9ac43e28d9b0e4fd49edf9f09d5d941257d2912f5228f9d166c023
+  sha256: 4af80282ff0349918c332428176089094019af6e2a381a2fd8f1c62a7a6bb7e8
 
 build:
   number: 0
@@ -33,7 +33,7 @@ tests:
         - cucumber_tag_expressions
       pip_check: true
       python_version: ${{ python_min }}.*
-  
+
 about:
   summary: Provides tag-expression parser for cucumber/behave
   license: MIT
