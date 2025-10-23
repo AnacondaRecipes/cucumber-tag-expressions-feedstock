@@ -1,0 +1,56 @@
+{% set name = "cucumber-tag-expressions" %}
+{% set version = "8.0.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  - url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name | replace('-', '_') }}-{{ version }}.tar.gz
+    sha256: 4af80282ff0349918c332428176089094019af6e2a381a2fd8f1c62a7a6bb7e8
+  - url: https://github.com/cucumber/tag-expressions/archive/refs/tags/v{{ version }}.tar.gz
+    sha256: a991784b27ed1ea3e222112886b18db4b1d81eb5f0bc8cf3e2c4ba53cd031a20
+    folder: gh_src
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<310]
+requirements:
+  host:
+    - pip
+    - python
+    - uv-build >=0.9.0,<0.10.0
+  run:
+    - python
+
+test:
+  source_files:
+    - gh_src/python/tests
+    - gh_src/testdata
+  imports:
+    - cucumber_tag_expressions
+    - cucumber_tag_expressions.model
+    - cucumber_tag_expressions.parser
+  commands:
+    - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -v gh_src/python/tests
+  requires:
+    - pip
+    - pytest
+    - pyyaml
+
+about:
+  home: https://cucumber.io
+  summary: Provides tag-expression parser for cucumber/behave
+  description: Provides tag-expression parser for cucumber/behave
+  license: MIT
+  license_file: LICENSE
+  license_family: MIT
+  doc_url: https://cucumber.io/docs/cucumber/api/#tag-expressions
+  dev_url: https://github.com/cucumber/tag-expressions
+
+extra:
+  recipe-maintainers:
+    - thewchan
